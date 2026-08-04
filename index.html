@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiTz Store — Portfolio & Jasa Pembuatan Website</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<style>
+  :root[data-theme="dark"] {
+    --bg: #0B0B12;
+    --bg-alt: #13131C;
+    --card: #181822;
+    --card-hover: #1F1F2B;
+    --text: #F5F1E8;
+    --muted: #9090A0;
+    --accent: #FF6B47;
+    --accent-2: #00E5C7;
+    --accent-3: #FFB84D;
+    --gold: #FFD700;
+    --border: rgba(255,255,255,0.08);
+    --glow: rgba(255,107,71,0.35);
+    --gold-glow: rgba(255,215,0,0.4);
+    --shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #F5F0E6;
+    --bg-alt: #EBE5D6;
+    --card: #FFFFFF;
+    --card-hover: #FAF7F0;
+    --text: #1A1A24;
+    --muted: #6B6B7B;
+    --accent: #E84C2D;
+    --accent-2: #00A88C;
+    --accent-3: #E07A12;
+    --gold: #D4AF37;
+    --border: rgba(0,0,0,0.08);
+    --glow: rgba(232,76,45,0.25);
+    --gold-glow: rgba(212,175,55,0.3);
+    --shadow: 0 20px 60px rgba(0,0,0,0.08);
+  }
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.5s ease, color 0.5s ease;
+    overflow-x: hidden;
+    margin: 0;
+  }
+  
+  .font-display {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-alt); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 5px; }
+  
+  /* Welcome Overlay */
+  .welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .welcome-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .welcome-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .welcome-bg::before {
+    content: '';
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 60%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  .welcome-bg::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+    top: 20%;
+    right: 10%;
+    animation: pulse 5s ease-in-out infinite 1s;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+  }
+  
+  .welcome-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 900px;
+  }
+  
+  .welcome-title {
+    font-size: clamp(2.2rem, 6vw, 5rem);
+    line-height: 1.05;
+    background: linear-gradient(135deg, var(--gold), var(--accent-3), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: titleSlide 1.2s ease-out;
+  }
+  @keyframes titleSlide {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .welcome-sub {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 1.05rem;
+    animation: titleSlide 1.2s ease-out 0.3s both;
+  }
+  
+  .welcome-btn {
+    margin-top: 2.5rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-3));
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 40px var(--glow);
+    transition: all 0.3s;
+    animation: titleSlide 1.2s ease-out 0.6s both;
+  }
+  .welcome-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 50px var(--gold-glow);
+  }
+  
+  .audio-hint {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-content: center;
+    animation: titleSlide 1.2s ease-out 0.9s both;
+  }
+  
+  /* Navigation */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .logo {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo-star {
+    color: var(--gold);
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 8px var(--gold-glow));
+    animation: spin-star 4s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin-star {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .theme-toggle, .hamburger {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: all 0.3s;
+    padding: 0;
+  }
+  .theme-toggle:hover, .hamburger:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    margin: 2px 0;
+    transition: all 0.3s;
+  }
+  .hamburger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  
+  /* Slide Menu */
+  .slide-menu {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 380px;
+    max-width: 90vw;
+    height: 100vh;
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border);
+    z-index: 99;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 6rem 2rem 2rem;
+    overflow-y: auto;
+  }
+  .slide-menu.open {
+    right: 0;
+    box-shadow: -20px 0 60px rgba(0,0,0,0.3);
+  }
+  
+  .menu-section-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  
+  .menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 12px;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+  }
+  .menu-link:hover {
+    background: var(--card);
+    border-color: var(--border);
+    transform: translateX(4px);
+    color: var(--accent);
+  }
+  .menu-link i {
+    width: 20px;
+    color: var(--accent);
+  }
+  
+  .social-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  .social-btn {
+    padding: 1rem 0.5rem;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    border: 1px solid var(--border);
+  }
+  .social-btn.tiktok {
+    background: linear-gradient(135deg, #000, #252525);
+    color: white;
+  }
+  .social-btn.wa {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+  }
+  .social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    padding: 8rem 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 7rem;
+      text-align: center;
+    }
+  }
+  
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .hero-tag .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-2);
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+  
+  .hero-title {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+  }
+  .hero-title .accent {
+    background: linear-gradient(135deg, var(--gold), var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-style: italic;
+  }
+  
+  .hero-desc {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 540px;
+  }
+  
+  @media (max-width: 900px) {
+    .hero-desc { margin-left: auto; margin-right: auto; }
+  }
+  
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  @media (max-width: 900px) {
+    .hero-cta, .hero-tag { justify-content: center; }
+  }
+  
+  .btn {
+    padding: 1rem 2rem;
+    border-radius: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-3));
+    color: white;
+    box-shadow: 0 10px 30px var(--glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px var(--gold-glow);
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--accent-3));
+    color: #1A1A24;
+    box-shadow: 0 10px 30px var(--gold-glow);
+  }
+  .btn-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px var(--gold-glow);
+  }
+  .btn-ghost {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    background: var(--card-hover);
+    transform: translateY(-3px);
+  }
+  
+  .hero-canvas-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  
+  #hero-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  .hero-badge {
+    position: absolute;
+    padding: 0.6rem 1rem;
+    background: color-mix(in srgb, var(--card) 90%, transparent);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .hero-badge.b1 { top: 8%; left: 0; color: var(--gold); }
+  .hero-badge.b2 { bottom: 18%; right: 0; color: var(--accent-2); }
+  .hero-badge.b3 { bottom: -5%; left: 30%; color: var(--accent-3); }
+  
+  @media (max-width: 700px) {
+    .hero-badge { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
+  }
+  
+  /* Sections */
+  .section {
+    padding: 6rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .section-tag {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  
+  .section-tag.gold {
+    background: color-mix(in srgb, var(--gold) 15%, transparent);
+    color: var(--gold);
+  }
+  
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    margin-top: 0;
+  }
+  
+  .section-desc {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 640px;
+    margin-bottom: 3rem;
+  }
+  
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; }
+  }
+  
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+  }
+  .about-text strong {
+    color: var(--text);
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+  .stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+  .stat-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+  }
+  
+  /* Services */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 2rem;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+  .service-card:hover::before {
+    opacity: 1;
+  }
+  
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .service-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .service-desc {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .service-features {
+    margin-top: 1rem;
+    list-style: none;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .service-features li {
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 0.3rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .service-features li::before {
+    content: '✦';
+    color: var(--gold);
+    position: absolute;
+    left: 0;
+  }
+  
+  /* Portfolio */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .portfolio-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    transition: all 0.4s;
+  }
+  .portfolio-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+  
+  .portfolio-img {
+    aspect-ratio: 16/10;
+    background: var(--bg-alt);
+    overflow: hidden;
+    position: relative;
+  }
+  .portfolio-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+  .portfolio-card:hover .portfolio-img img {
+    transform: scale(1.05);
+  }
+  
+  .portfolio-cat {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.3rem 0.8rem;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(10px);
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .portfolio-body {
+    padding: 1.5rem;
+  }
+  .portfolio-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .portfolio-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .portfolio-tech {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .tech-tag {
+    padding: 0.2rem 0.6rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  
+  /* Pricing - Premium Separated Layout */
+  .pricing-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .pricing-card-large {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s;
+  }
+  .pricing-card-large:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+  }
+  .pricing-card-large::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  }
+  .pricing-card-large.gold-card::before {
+    background: linear-gradient(90deg, var(--gold), var(--accent-3));
+  }
+  
+  .pricing-inner {
+    padding: 3rem;
+  }
+  @media (max-width: 600px) {
+    .pricing-inner { padding: 2rem 1.5rem; }
+  }
+  
+  .pricing-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 600px) {
+    .pricing-head { flex-direction: column; align-items: flex-start; }
+  }
+  
+  .pricing-title-group h3 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+  }
+  .pricing-title-group p {
+    color: var(--muted);
+    max-width: 300px;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  .pricing-amount-group {
+    text-align: right;
+  }
+  @media (max-width: 600px) {
+    .pricing-amount-group { text-align: left; }
+  }
+  .pricing-amount-group .from {
+    color: var(--muted);
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .pricing-amount-group .amount {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .pricing-card-large.gold-card .pricing-amount-group .amount {
+    color: var(--gold);
+  }
+  .pricing-amount-group .unit {
+    color: var(--muted);
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.3rem;
+  }
+  
+  .pricing-features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 600px) {
+    .pricing-features-grid { grid-template-columns: 1fr; }
+  }
+  
+  .pricing-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1rem;
+    background: var(--bg-alt);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .pricing-feature-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+  .pricing-card-large.gold-card .pricing-feature-item:hover {
+    border-color: var(--gold);
+  }
+  .pricing-feature-item i {
+    color: var(--accent);
+    width: 28px;
+    height: 28px;
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .pricing-card-large.gold-card .pricing-feature-item i {
+    color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 15%, transparent);
+  }
+  .pricing-feature-item span {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  
+  .pricing-btn-large {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.05rem;
+    justify-content: center;
+  }
+  
+  /* Comments */
+  .comments-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .comment-form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--accent-2);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .live-indicator::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--accent-2);
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+  
+  .form-input, .form-textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+  }
+  .form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+  .form-textarea {
+    min-height: 100px;
+    resize: vertical;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .comment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .comment-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    gap: 1rem;
+    animation: slideUp 0.4s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .comment-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    color: white;
+    font-size: 1.1rem;
+  }
+  
+  .comment-body {
+    flex: 1;
+    min-width: 0;
+  }
+  .comment-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.3rem;
+    flex-wrap: wrap;
+  }
+  .comment-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .comment-time {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+  .comment-text {
+    color: var(--muted);
+    line-height: 1.5;
+    font-size: 0.95rem;
+    word-wrap: break-word;
+  }
+  
+  /* Contact */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  @media (max-width: 700px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  
+  .contact-card {
+    padding: 2rem;
+    border-radius: 22px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-card.wa {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+  }
+  .contact-card.gmail {
+    background: linear-gradient(135deg, #EA4335, #C5221F);
+  }
+  .contact-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+  .contact-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.8rem;
+  }
+  .contact-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .contact-detail {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 1.2rem;
+    line-height: 1.6;
+  }
+  .contact-btn {
+    display: inline-block;
+    padding: 0.7rem 1.6rem;
+    background: white;
+    color: #1A1A24;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    background: var(--bg-alt);
+  }
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 700px) {
+    .footer-inner { grid-template-columns: 1fr; }
+  }
+  .footer-brand {
+    max-width: 400px;
+  }
+  .footer-brand p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  .footer-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    transform: translateX(120%);
+    transition: transform 0.4s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+  }
+  .toast.show {
+    transform: translateX(0);
+  }
+  
+  /* Reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Decorative bg */
+  .bg-deco {
+    position: fixed;
+    pointer-events: none;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+  .bg-deco.b1 {
+    top: 20%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: var(--glow);
+    opacity: 0.4;
+  }
+  .bg-deco.b2 {
+    bottom: 10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: color-mix(in srgb, var(--gold) 20%, transparent);
+    opacity: 0.3;
+  }
+  
+  @media (max-width: 600px) {
+    .nav { padding: 1rem; }
+    .section { padding: 4rem 1rem; }
+    .hero { padding: 6rem 1rem 3rem; }
+    .toast { right: 1rem; left: 1rem; bottom: 1rem; }
+  }
+</style>
+</head>
+<body>
+  <!-- Welcome Overlay -->
+  <div class="welcome-overlay" id="welcomeOverlay">
+    <div class="welcome-bg"></div>
+    <div class="welcome-text">
+      <div class="font-display welcome-title">Welcome to the<br>DiTz store portfolio</div>
+      <div class="welcome-sub">Tempat di mana ide-ide brilian berubah menjadi karya digital yang memukau.</div>
+      <button class="welcome-btn" id="enterBtn">
+        <i class="fas fa-play" style="margin-right: 0.5rem;"></i> Masuk Sekarang
+      </button>
+      <div class="audio-hint">
+        <i class="fas fa-volume-up"></i> Pastikan volume aktif untuk pengalaman terbaik
+      </div>
+    </div>
+  </div>
+  
+  <!-- Audio: DiTz.mp3 (file akan disediakan oleh owner, taruh di folder yang sama) -->
+  <audio id="welcomeAudio" src="DiTz.mp3" preload="auto" autoplay></audio>
+  
+  <!-- Decorative backgrounds -->
+  <div class="bg-deco b1"></div>
+  <div class="bg-deco b2"></div>
+  
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="#hero" class="logo">
+      <i class="fas fa-star logo-star"></i>
+      DiTz Store
+    </a>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+  
+  <!-- Slide Menu -->
+  <div class="slide-menu" id="slideMenu">
+    <div class="menu-section-title">Navigasi</div>
+    <a href="#hero" class="menu-link"><i class="fas fa-home"></i> Beranda</a>
+    <a href="#about" class="menu-link"><i class="fas fa-user"></i> Tentang Kami</a>
+    <a href="#services" class="menu-link"><i class="fas fa-cogs"></i> Layanan</a>
+    <a href="#portfolio" class="menu-link"><i class="fas fa-briefcase"></i> Portfolio</a>
+    <a href="#pricing-pelajar" class="menu-link"><i class="fas fa-graduation-cap"></i> Paket Pelajar</a>
+    <a href="#pricing-umkm" class="menu-link"><i class="fas fa-store"></i> Paket UMKM</a>
+    <a href="#comments" class="menu-link"><i class="fas fa-comments"></i> Komentar</a>
+    <a href="#contact" class="menu-link"><i class="fas fa-envelope"></i> Kontak</a>
+    
+    <div class="menu-section-title" style="margin-top: 2rem;">Ikuti Kami</div>
+    <div class="social-row">
+      <a href="https://www.tiktok.com/@ditzstoreofficial?_r=1&_t=ZS-98ZZmO1gWob" target="_blank" class="social-btn tiktok">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg>
+        TikTok
+      </a>
+      <a href="https://whatsapp.com/channel/0029Vb8avtoAInPrpNXC8v3A" target="_blank" class="social-btn wa">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Saluran WA
+      </a>
+    </div>
+  </div>
+  
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="dot"></span> Tersedia untuk project baru
+      </div>
+      <h1 class="font-display hero-title">
+        Membangun Web<br>
+        yang <span class="accent">Berkesan</span>,<br>
+        Bukan Sekadar Tampil.
+      </h1>
+      <p class="hero-desc">
+        DiTz Store adalah studio kreatif yang fokus pada pembuatan website modern, 
+        interaktif, dan berkelas. Dari landing page untuk pelajar hingga sistem 
+        lengkap untuk UMKM — semua dikerjakan dengan detail dan rasa.
+      </p>
+      <div class="hero-cta">
+        <a href="#pricing-pelajar" class="btn btn-gold">
+          <i class="fas fa-star"></i> Lihat Paket Harga
+        </a>
+        <a href="#portfolio" class="btn btn-ghost">
+          <i class="fas fa-eye"></i> Lihat Project
+        </a>
+      </div>
+    </div>
+    <div class="hero-canvas-wrap">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-badge b1"><i class="fas fa-star"></i> Web Experience 3D</div>
+      <div class="hero-badge b2"><i class="fas fa-gem"></i> Interactive UI</div>
+      <div class="hero-badge b3"><i class="fas fa-bolt"></i> Responsive Design</div>
+    </div>
+  </section>
+  
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="reveal">
+      <span class="section-tag">Tentang Kami</span>
+      <h2 class="font-display section-title">Bukan Sekadar Jasa, Tapi Partner Digital.</h2>
+      <p class="section-desc">
+        Kami percaya bahwa setiap brand punya cerita, dan tugas kami adalah menerjemahkan cerita itu 
+        menjadi pengalaman digital yang berkesan. Berikut detail tentang siapa kami.
+      </p>
+    </div>
+    
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          <strong>DiTz Store</strong> lahir dari kecintaan terhadap dunia web dan desain. 
+          Kami bukan agency korporat yang kaku — kami adalah tim kecil yang bergerak cepat, 
+          mendengarkan kebutuhan klien, dan menghasilkan karya yang detail.
+        </p>
+        <p>
+          Spesialisasi kami adalah membangun <strong>website portfolio, landing page, 
+          website UMKM, dan website company profile</strong> dengan pendekatan modern. 
+          Setiap project dikerjakan dari nol, bukan template, sehingga hasilnya benar-benar 
+          mencerminkan identitas klien.
+        </p>
+        <p>
+          Kami juga aktif berbagi konten seputar dunia web development dan desain di 
+          <strong>TikTok</strong> serta <strong>Saluran WhatsApp</strong>, jadi klien 
+          bisa terus belajar dan update bareng kami setelah project selesai.
+        </p>
+      </div>
+      <div class="stats-grid reveal">
+        <div class="stat-card">
+          <div class="stat-num" data-target="50">0</div>
+          <div class="stat-label">Project Selesai</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="35">0</div>
+          <div class="stat-label">Klien Puas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="3">0</div>
+          <div class="stat-label">Tahun Pengalaman</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="100">0</div>
+          <div class="stat-label">% Dedikasi</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Services -->
+  <section class="section" id="services">
+    <div class="reveal">
+      <span class="section-tag">Layanan</span>
+      <h2 class="font-display section-title">Apa yang Bisa Kami Buatkan.</h2>
+      <p class="section-desc">
+        Setiap layanan kami dirancang untuk kebutuhan berbeda. Pilih yang paling sesuai 
+        dengan tujuanmu, atau ngobrol langsung dengan kami untuk solusi custom.
+      </p>
+    </div>
+    
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-globe"></i></div>
+        <h3 class="service-title">Landing Page</h3>
+        <p class="service-desc">
+          Satu halaman yang dirancang untuk konversi tinggi. Cocok untuk pelajar yang 
+          ingin showcase karya atau UMKM yang promosi produk spesifik.
+        </p>
+        <ul class="service-features">
+          <li>Desain custom, bukan template</li>
+          <li>Animasi modern & interaktif</li>
+          <li>Mobile responsive</li>
+          <li>SEO basic</li>
+        </ul>
+      </div>
+      
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-store"></i></div>
+        <h3 class="service-title">Website UMKM</h3>
+        <p class="service-desc">
+          Website lengkap untuk usaha kamu — mulai dari company profile, katalog produk, 
+          sampai integrasi WhatsApp untuk order.
+        </p>
+        <ul class="service-features">
+          <li>Multi-page website</li>
+          <li>Katalog produk / layanan</li>
+          <li>Tombol WhatsApp langsung</li>
+          <li>Optimasi SEO</li>
+        </ul>
+      </div>
+      
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-palette"></i></div>
+        <h3 class="service-title">UI/UX Design</h3>
+        <p class="service-desc">
+          Desain antarmuka yang nggak cuma cantik, tapi juga mudah dipakai. Dari wireframe 
+          sampai prototype interaktif.
+        </p>
+        <ul class="service-features">
+          <li>Riset & user flow</li>
+          <li>Wireframe & mockup</li>
+          <li>Design system</li>
+          <li>Prototype interaktif</li>
+        </ul>
+      </div>
+      
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-shopping-cart"></i></div>
+        <h3 class="service-title">E-Commerce</h3>
+        <p class="service-desc">
+          Toko online siap pakai dengan keranjang, checkout, dan integrasi payment gateway 
+          serta ekspedisi.
+        </p>
+        <ul class="service-features">
+          <li>Keranjang & checkout</li>
+          <li>Payment gateway</li>
+          <li>Manajemen produk</li>
+          <li>Laporan penjualan</li>
+        </ul>
+      </div>
+      
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+        <h3 class="service-title">Website Portfolio</h3>
+        <p class="service-desc">
+          Showcase karyamu dengan website portfolio yang elegan dan profesional. 
+          Cocok untuk pelajar, freelancer, atau profesional.
+        </p>
+        <ul class="service-features">
+          <li>Galeri karya</li>
+          <li>Animasi smooth</li>
+          <li>Form kontak</li>
+          <li>CMS optional</li>
+        </ul>
+      </div>
+      
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-code"></i></div>
+        <h3 class="service-title">Web Custom</h3>
+        <p class="service-desc">
+          Punya kebutuhan khusus? Kami bisa bangun aplikasi web custom sesuai spesifikasi, 
+          mulai dari dashboard admin sampai sistem internal.
+        </p>
+        <ul class="service-features">
+          <li>Arsitektur scalable</li>
+          <li>Database & API</li>
+          <li>Dashboard admin</li>
+          <li>Dokumentasi lengkap</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Portfolio -->
+  <section class="section" id="portfolio">
+    <div class="reveal">
+      <span class="section-tag">Portfolio</span>
+      <h2 class="font-display section-title">Project Nyata DiTz Store.</h2>
+      <p class="section-desc">
+        Kumpulan website yang pernah kami rancang dan kembangkan. Setiap kartu dilengkapi
+        penjelasan singkat proses pembuatan serta tombol untuk membuka demo secara langsung.
+      </p>
+    </div>
+    
+    <div class="portfolio-grid">
+      <div class="portfolio-card reveal">
+        <div class="portfolio-img">
+          <img src="https://image.thum.io/get/width/1200/crop/750/https://ditz-porto.vercel.app/" alt="Preview DiTz Store Portfolio" loading="lazy">
+          <span class="portfolio-cat">Portfolio 3D</span>
+        </div>
+        <div class="portfolio-body">
+          <h3 class="portfolio-title">DiTz Store — Portfolio</h3>
+          <p class="portfolio-desc">
+            Website identitas utama DiTz Store dengan tampilan premium, animasi interaktif,
+            navigasi responsif, serta penyajian layanan dan project yang mudah dipahami pengunjung.
+          </p>
+          <div class="portfolio-tech">
+            <span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Responsive UI</span>
+          </div>
+          <a href="https://ditz-porto.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="margin-top:1.2rem;padding:.75rem 1rem;font-size:.85rem;width:100%;justify-content:center;">
+            <i class="fas fa-arrow-up-right-from-square"></i> Kunjungi Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal">
+        <div class="portfolio-img">
+          <img src="https://image.thum.io/get/width/1200/crop/750/https://ditz-quran.vercel.app/" alt="Preview DiTz Quran" loading="lazy">
+          <span class="portfolio-cat">Islamic Web</span>
+        </div>
+        <div class="portfolio-body">
+          <h3 class="portfolio-title">DiTz Quran — Al-Qur'an Digital</h3>
+          <p class="portfolio-desc">
+            Website Al-Qur'an digital yang dibuat agar pengguna dapat membaca ayat dan menjelajahi
+            surat dengan tampilan bersih, ringan, serta nyaman digunakan lewat Android maupun desktop.
+          </p>
+          <div class="portfolio-tech">
+            <span class="tech-tag">API</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Mobile First</span><span class="tech-tag">Vercel</span>
+          </div>
+          <a href="https://ditz-quran.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="margin-top:1.2rem;padding:.75rem 1rem;font-size:.85rem;width:100%;justify-content:center;">
+            <i class="fas fa-arrow-up-right-from-square"></i> Kunjungi Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal">
+        <div class="portfolio-img">
+          <img src="https://image.thum.io/get/width/1200/crop/750/https://ditz-fx.vercel.app/?v=3" alt="Preview DiTz FX" loading="lazy">
+          <span class="portfolio-cat">Finance UI</span>
+        </div>
+        <div class="portfolio-body">
+          <h3 class="portfolio-title">DiTz FX — Trading Dashboard</h3>
+          <p class="portfolio-desc">
+            Konsep dashboard trading dengan penyajian informasi pasar yang modern. Proses pembuatannya
+            berfokus pada hierarki data, tampilan profesional, dan navigasi yang tetap jelas di layar kecil.
+          </p>
+          <div class="portfolio-tech">
+            <span class="tech-tag">Dashboard</span><span class="tech-tag">Chart UI</span><span class="tech-tag">JavaScript</span><span class="tech-tag">Responsive</span>
+          </div>
+          <a href="https://ditz-fx.vercel.app/?v=3" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="margin-top:1.2rem;padding:.75rem 1rem;font-size:.85rem;width:100%;justify-content:center;">
+            <i class="fas fa-arrow-up-right-from-square"></i> Kunjungi Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal">
+        <div class="portfolio-img">
+          <img src="https://image.thum.io/get/width/1200/crop/750/https://ditz-komik.vercel.app/" alt="Preview DiTz Komik" loading="lazy">
+          <span class="portfolio-cat">Entertainment</span>
+        </div>
+        <div class="portfolio-body">
+          <h3 class="portfolio-title">DiTz Komik — Platform Baca Komik</h3>
+          <p class="portfolio-desc">
+            Website katalog komik dengan fokus pada eksplorasi judul, pencarian konten, dan pengalaman
+            membaca yang praktis. Tampilan dibuat modern agar koleksi mudah ditemukan oleh pengguna.
+          </p>
+          <div class="portfolio-tech">
+            <span class="tech-tag">Catalog UI</span><span class="tech-tag">API</span><span class="tech-tag">Search</span><span class="tech-tag">Vercel</span>
+          </div>
+          <a href="https://ditz-komik.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="margin-top:1.2rem;padding:.75rem 1rem;font-size:.85rem;width:100%;justify-content:center;">
+            <i class="fas fa-arrow-up-right-from-square"></i> Kunjungi Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="portfolio-card reveal">
+        <div class="portfolio-img">
+          <img src="https://image.thum.io/get/width/1200/crop/750/https://fake-dm-ig.vercel.app/" alt="Preview Fake DM Instagram" loading="lazy">
+          <span class="portfolio-cat">Creative Tool</span>
+        </div>
+        <div class="portfolio-body">
+          <h3 class="portfolio-title">Fake DM IG — Content Mockup Tool</h3>
+          <p class="portfolio-desc">
+            Tool kreatif untuk membuat mockup tampilan percakapan Instagram yang dapat disesuaikan.
+            Project dirancang untuk kebutuhan konten, latihan desain, dan pembuatan visual demonstrasi.
+          </p>
+          <div class="portfolio-tech">
+            <span class="tech-tag">Editor UI</span><span class="tech-tag">DOM</span><span class="tech-tag">Download Image</span><span class="tech-tag">Mobile UI</span>
+          </div>
+          <a href="https://fake-dm-ig.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="margin-top:1.2rem;padding:.75rem 1rem;font-size:.85rem;width:100%;justify-content:center;">
+            <i class="fas fa-arrow-up-right-from-square"></i> Kunjungi Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pricing Pelajar (Separate Section) -->
+  <section class="section" id="pricing-pelajar">
+    <div class="reveal" style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+      <span class="section-tag gold">Paket Pelajar</span>
+      <h2 class="font-display section-title">Wujudkan Karya Digital Pertama-mu.</h2>
+      <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+        Khusus untuk siswa, mahasiswa, atau pemula yang ingin menampilkan diri di dunia digital. 
+        Harga ramah di kantong, tapi hasil tetap profesional dan berkelas.
+      </p>
+    </div>
+    
+    <div class="pricing-wrap reveal">
+      <div class="pricing-card-large gold-card">
+        <div class="pricing-inner">
+          <div class="pricing-head">
+            <div class="pricing-title-group">
+              <h3>Paket Pelajar</h3>
+              <p>Untuk siswa, mahasiswa, atau pemula yang ingin showcase diri.</p>
+            </div>
+            <div class="pricing-amount-group">
+              <span class="from">Mulai dari</span>
+              <span class="amount">Rp 40K</span>
+              <span class="unit">/ project</span>
+            </div>
+          </div>
+          
+          <div class="pricing-features-grid">
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Landing page 1 halaman</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Desain custom modern</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Mobile responsive</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Animasi sederhana</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Form kontak dasar</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Revisi 2x</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Pengerjaan 3-5 hari</span>
+            </div>
+            <div class="pricing-feature-item">
+              <i class="fas fa-check"></i>
+              <span>Bantuan deploy hosting</span>
+            </div>
+          </div>
+          
+          <a href="https://wa.me/6287739435496?text=Halo%20DiTz%20Store,%20saya%20tertarik%20dengan%20Paket%20Pelajar" 
+             target="_blank" class="btn btn-gold pricing-btn-large">
+            <i class="fab fa-whatsapp"></i> Pesan Paket Pelajar via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pricing UMKM (Separate Section) -->
+  <section class="section" id="pricing-umkm" style="background: var(--bg-alt); max-width: none; padding-left: 2rem; padding-right: 2rem;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+      <div class="reveal" style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+        <span class="section-tag">Paket UMKM</span>
+        <h2 class="font-display section-title">Website Profesional untuk Bisnis Anda.</h2>
+        <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+          Paket lengkap untuk pemilik usaha yang butuh website bisnis profesional. 
+          Dilengkapi dengan berbagai fitur advanced untuk meningkatkan konversi dan kepercayaan pelanggan.
+        </p>
+      </div>
+      
+      <div class="pricing-wrap reveal">
+        <div class="pricing-card-large">
+          <div class="pricing-inner">
+            <div class="pricing-head">
+              <div class="pricing-title-group">
+                <h3>Paket UMKM</h3>
+                <p>Untuk pemilik usaha yang butuh website profesional lengkap.</p>
+              </div>
+              <div class="pricing-amount-group">
+                <span class="from">Mulai dari</span>
+                <span class="amount">Rp 150K</span>
+                <span class="unit">/ project</span>
+              </div>
+            </div>
+            
+            <div class="pricing-features-grid">
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Website multi-halaman (sampai 6)</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Desain premium custom</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Mobile responsive sempurna</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Animasi interaktif advanced</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Integrasi WhatsApp & form</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>SEO optimization</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Free hosting 1 tahun</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Free domain .com 1 tahun</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Revisi unlimited (scope)</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Pengerjaan 7-14 hari</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Training dashboard</span>
+              </div>
+              <div class="pricing-feature-item">
+                <i class="fas fa-check"></i>
+                <span>Garansi 30 hari pasca-launch</span>
+              </div>
+            </div>
+            
+            <a href="https://wa.me/6287739435496?text=Halo%20DiTz%20Store,%20saya%20tertarik%20dengan%20Paket%20UMKM" 
+               target="_blank" class="btn btn-primary pricing-btn-large">
+              <i class="fab fa-whatsapp"></i> Pesan Paket UMKM via WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Comments -->
+  <section class="section" id="comments">
+    <div class="reveal">
+      <span class="section-tag">Komentar</span>
+      <h2 class="font-display section-title">Kata Mereka Tentang DiTz Store.</h2>
+      <p class="section-desc">
+        Komentar real-time dari klien dan pengunjung. Tinggalkan jejakmu juga — bagikan pengalaman, 
+        pertanyaan, atau saran untuk kami.
+      </p>
+    </div>
+    
+    <div class="comments-wrap reveal">
+      <div class="live-indicator">Live • Komentar Real-time</div>
+      
+      <form class="comment-form" id="commentForm">
+        <div class="form-row">
+          <input type="text" class="form-input" id="commentName" placeholder="Nama kamu" required>
+          <input type="email" class="form-input" id="commentEmail" placeholder="Email (opsional)">
+        </div>
+        <textarea class="form-textarea" id="commentMessage" placeholder="Tulis komentar atau pertanyaan kamu..." required></textarea>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i> Kirim Komentar
+        </button>
+      </form>
+      
+      <div class="comment-list" id="commentList"></div>
+    </div>
+  </section>
+  
+  <!-- Contact -->
+  <section class="section" id="contact">
+    <div class="reveal">
+      <span class="section-tag">Kontak</span>
+      <h2 class="font-display section-title">Ngobrol Langsung dengan Owner.</h2>
+      <p class="section-desc">
+        Punya pertanyaan, mau konsultasi project, atau butuh penawaran custom? 
+        Hubungi kami langsung lewat WhatsApp atau email. Kami selalu fast response.
+      </p>
+    </div>
+    
+    <div class="contact-grid reveal">
+      <a href="https://wa.me/6287739435496?text=Halo%20DiTz%20Store,%20saya%20ingin%20konsultasi" 
+         target="_blank" class="contact-card wa">
+        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+        <div class="contact-title">WhatsApp Owner</div>
+        <div class="contact-detail">Chat langsung, fast response<br>+62 877-3943-5496</div>
+        <span class="contact-btn">Chat Sekarang</span>
+      </a>
+      
+      <a href="mailto:ditzstoreofficial@gmail.com?subject=Konsultasi%20Project" class="contact-card gmail">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div class="contact-title">Email Kami</div>
+        <div class="contact-detail">Untuk pertanyaan formal atau dokumen<br>ditzstoreofficial@gmail.com</div>
+        <span class="contact-btn">Kirim Email</span>
+      </a>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#hero" class="logo">
+          <i class="fas fa-star logo-star"></i>
+          DiTz Store
+        </a>
+        <p>
+          Studio kreatif fokus pada pembuatan website modern untuk pelajar dan UMKM. 
+          Dikerjakan dengan detail, dijalankan dengan passion.
+        </p>
+      </div>
+      <div>
+        <div class="footer-title">Navigasi</div>
+        <ul class="footer-links">
+          <li><a href="#hero">Beranda</a></li>
+          <li><a href="#about">Tentang</a></li>
+          <li><a href="#services">Layanan</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#pricing-pelajar">Paket Pelajar</a></li>
+          <li><a href="#pricing-umkm">Paket UMKM</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-title">Kontak</div>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/6287739435496" target="_blank">WhatsApp Owner</a></li>
+          <li><a href="mailto:ditzstoreofficial@gmail.com">Gmail</a></li>
+          <li><a href="https://www.tiktok.com/@ditzstoreofficial?_r=1&_t=ZS-98ZZmO1gWob" target="_blank">TikTok</a></li>
+          <li><a href="https://whatsapp.com/channel/0029Vb8avtoAInPrpNXC8v3A" target="_blank">Saluran WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 DiTz Store. Dibuat dengan passion di Indonesia.
+    </div>
+  </footer>
+  
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle" style="color: var(--gold);"></i>
+    <span id="toastMsg">Komentar terkirim!</span>
+  </div>
+  
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
+    
+    /* ========== Theme Toggle ========== */
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const root = document.documentElement;
+    
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+      localStorage.setItem('ditz-theme', theme);
+    }
+    
+    const savedTheme = localStorage.getItem('ditz-theme') || 'dark';
+    setTheme(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme');
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    
+    /* ========== Welcome Screen + Audio ========== */
+    const welcomeOverlay = document.getElementById('welcomeOverlay');
+    const enterBtn = document.getElementById('enterBtn');
+    const welcomeAudio = document.getElementById('welcomeAudio');
+
+    welcomeAudio.volume = 0.65;
+
+    async function tryPlayWelcomeAudio() {
+      try {
+        await welcomeAudio.play();
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    // Dicoba otomatis saat halaman dibuka. Sebagian browser mobile tetap memblokir
+    // audio sampai pengguna menyentuh layar atau menekan tombol Masuk.
+    window.addEventListener('load', tryPlayWelcomeAudio, { once: true });
+    document.addEventListener('pointerdown', tryPlayWelcomeAudio, { once: true });
+
+    enterBtn.addEventListener('click', async () => {
+      await tryPlayWelcomeAudio();
+      welcomeOverlay.classList.add('hidden');
+    });
+
+    /* ========== Hamburger Menu ========== */
+    const hamburger = document.getElementById('hamburger');
+    const slideMenu = document.getElementById('slideMenu');
+    
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      slideMenu.classList.toggle('open');
+    });
+    
+    document.querySelectorAll('.menu-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        slideMenu.classList.remove('open');
+      });
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!slideMenu.contains(e.target) && !hamburger.contains(e.target) && slideMenu.classList.contains('open')) {
+        hamburger.classList.remove('active');
+        slideMenu.classList.remove('open');
+      }
+    });
+    
+    /* ========== 3D Website Showcase Scene ========== */
+    const canvas = document.getElementById('hero-canvas');
+    const scene = new THREE.Scene();
+
+    let width = Math.max(1, canvas.clientWidth);
+    let height = Math.max(1, canvas.clientHeight);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0.25, 7.4);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const keyLight = new THREE.DirectionalLight(0xffd36a, 3.2);
+    keyLight.position.set(4, 5, 6);
+    scene.add(keyLight);
+    const cyanLight = new THREE.PointLight(0x00e5c7, 20, 12);
+    cyanLight.position.set(-4, -1, 4);
+    scene.add(cyanLight);
+    const coralLight = new THREE.PointLight(0xff6b47, 18, 12);
+    coralLight.position.set(4, 1, 2);
+    scene.add(coralLight);
+
+    const showcase = new THREE.Group();
+    showcase.rotation.x = -0.08;
+    scene.add(showcase);
+
+    const glassMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x171724,
+      metalness: 0.35,
+      roughness: 0.18,
+      transmission: 0.08,
+      clearcoat: 1,
+      clearcoatRoughness: 0.08,
+      envMapIntensity: 1.4
+    });
+    const goldMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xffc84a,
+      metalness: 1,
+      roughness: 0.18,
+      clearcoat: 1,
+      envMapIntensity: 1.8
+    });
+    const darkMaterial = new THREE.MeshStandardMaterial({ color: 0x090911, metalness: 0.45, roughness: 0.3 });
+    const coralMaterial = new THREE.MeshStandardMaterial({ color: 0xff6b47, emissive: 0x3a0d08, emissiveIntensity: 0.7 });
+    const cyanMaterial = new THREE.MeshStandardMaterial({ color: 0x00e5c7, emissive: 0x003a32, emissiveIntensity: 0.8 });
+
+    // Main 3D browser window
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(4.8, 3.15, 0.28, 6, 6, 2), glassMaterial);
+    frame.position.z = 0;
+    showcase.add(frame);
+
+    const screen = new THREE.Mesh(new THREE.PlaneGeometry(4.42, 2.55), darkMaterial);
+    screen.position.set(0, -0.13, 0.151);
+    showcase.add(screen);
+
+    const topBar = new THREE.Mesh(new THREE.BoxGeometry(4.42, 0.32, 0.05), new THREE.MeshStandardMaterial({ color: 0x242434, roughness: 0.35 }));
+    topBar.position.set(0, 1.27, 0.18);
+    showcase.add(topBar);
+
+    [-1.92, -1.68, -1.44].forEach((x, index) => {
+      const materials = [coralMaterial, goldMaterial, cyanMaterial];
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(0.065, 24, 24), materials[index]);
+      dot.position.set(x, 1.27, 0.235);
+      showcase.add(dot);
+    });
+
+    // UI elements inside screen
+    const heroBlock = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.22, 0.07), goldMaterial);
+    heroBlock.position.set(-0.88, 0.56, 0.205);
+    showcase.add(heroBlock);
+    const subBlock = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.11, 0.06), new THREE.MeshStandardMaterial({ color: 0x777789 }));
+    subBlock.position.set(-1.13, 0.24, 0.205);
+    showcase.add(subBlock);
+    const buttonBlock = new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.32, 0.08), coralMaterial);
+    buttonBlock.position.set(-1.45, -0.2, 0.215);
+    showcase.add(buttonBlock);
+
+    const previewCard = new THREE.Mesh(new THREE.BoxGeometry(1.55, 1.55, 0.12), new THREE.MeshPhysicalMaterial({
+      color: 0x24243a, metalness: 0.5, roughness: 0.15, clearcoat: 1
+    }));
+    previewCard.position.set(1.12, 0.15, 0.24);
+    previewCard.rotation.z = -0.05;
+    showcase.add(previewCard);
+
+    const logoRing = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.09, 18, 64), goldMaterial);
+    logoRing.position.set(1.12, 0.28, 0.34);
+    showcase.add(logoRing);
+    const logoCore = new THREE.Mesh(new THREE.IcosahedronGeometry(0.25, 1), coralMaterial);
+    logoCore.position.set(1.12, 0.28, 0.35);
+    showcase.add(logoCore);
+
+    // Floating code panels
+    const floatingPanels = [];
+    const panelData = [
+      { x: -2.55, y: 1.25, z: -0.2, color: cyanMaterial, scale: 0.74 },
+      { x: 2.62, y: -1.15, z: 0.18, color: coralMaterial, scale: 0.68 },
+      { x: -2.45, y: -1.35, z: -0.45, color: goldMaterial, scale: 0.58 }
+    ];
+    panelData.forEach((data, index) => {
+      const group = new THREE.Group();
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.86, 0.11), glassMaterial.clone());
+      group.add(panel);
+      for (let line = 0; line < 3; line++) {
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(0.85 - line * 0.13, 0.07, 0.025), line === 0 ? data.color : new THREE.MeshStandardMaterial({ color: 0x747487 }));
+        bar.position.set(-0.12 + line * 0.05, 0.22 - line * 0.22, 0.07);
+        group.add(bar);
+      }
+      group.position.set(data.x, data.y, data.z);
+      group.scale.setScalar(data.scale);
+      group.rotation.set(-0.08, index % 2 ? -0.2 : 0.22, index % 2 ? 0.08 : -0.08);
+      group.userData = { baseY: data.y, speed: 0.75 + index * 0.18, offset: index * 1.7 };
+      floatingPanels.push(group);
+      scene.add(group);
+    });
+
+    const particlesCount = 90;
+    const particlePositions = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount; i++) {
+      particlePositions[i * 3] = (Math.random() - 0.5) * 9;
+      particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 7;
+      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 5;
+    }
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particles = new THREE.Points(particlesGeometry, new THREE.PointsMaterial({
+      color: 0xffd77a,
+      size: 0.035,
+      transparent: true,
+      opacity: 0.8,
+      depthWrite: false
+    }));
+    scene.add(particles);
+
+    let pointerX = 0;
+    let pointerY = 0;
+    let smoothX = 0;
+    let smoothY = 0;
+    window.addEventListener('pointermove', (event) => {
+      pointerX = (event.clientX / window.innerWidth - 0.5) * 2;
+      pointerY = (event.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function onResize() {
+      width = Math.max(1, canvas.clientWidth);
+      height = Math.max(1, canvas.clientHeight);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+    window.addEventListener('resize', onResize);
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+      smoothX += (pointerX - smoothX) * 0.04;
+      smoothY += (pointerY - smoothY) * 0.04;
+
+      showcase.rotation.y = Math.sin(time * 0.35) * 0.13 + smoothX * 0.18;
+      showcase.rotation.x = -0.08 + Math.cos(time * 0.3) * 0.035 + smoothY * 0.1;
+      showcase.position.y = Math.sin(time * 0.8) * 0.08;
+      logoRing.rotation.z = time * 0.65;
+      logoCore.rotation.x = time * 0.7;
+      logoCore.rotation.y = time * 0.9;
+
+      floatingPanels.forEach((panel) => {
+        panel.position.y = panel.userData.baseY + Math.sin(time * panel.userData.speed + panel.userData.offset) * 0.18;
+        panel.rotation.y += 0.0015;
+      });
+      particles.rotation.y = time * 0.025;
+      renderer.render(scene, camera);
+    }
+    animate();
+    setTimeout(onResize, 100);
+
+    /* ========== Reveal Animation ========== */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    revealEls.forEach(el => observer.observe(el));
+    
+    /* ========== Stats Counter ========== */
+    const statNums = document.querySelectorAll('.stat-num');
+    let statsAnimated = false;
+    
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !statsAnimated) {
+          statsAnimated = true;
+          statNums.forEach(num => {
+            const target = parseInt(num.dataset.target);
+            const duration = 1500;
+            const start = Date.now();
+            const update = () => {
+              const elapsed = Date.now() - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              num.textContent = Math.floor(target * eased) + (target === 100 ? '' : '+');
+              if (progress < 1) requestAnimationFrame(update);
+            };
+            update();
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    const statsSection = document.querySelector('.stats-grid');
+    if (statsSection) statsObserver.observe(statsSection);
+    
+    /* ========== Realtime Comments — Supabase ========== */
+    const commentForm = document.getElementById('commentForm');
+    const commentList = document.getElementById('commentList');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const liveIndicator = document.querySelector('.live-indicator');
+
+    // Isi dua nilai ini dari Supabase Project Settings > API.
+    // Anon key memang dirancang untuk dipakai di frontend, dengan RLS yang aktif.
+    const SUPABASE_URL = 'PASTE_SUPABASE_URL_DI_SINI';
+    const SUPABASE_ANON_KEY = 'PASTE_SUPABASE_ANON_KEY_DI_SINI';
+    const supabaseReady = SUPABASE_URL.startsWith('https://') && !SUPABASE_ANON_KEY.startsWith('PASTE_');
+    const supabase = supabaseReady ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+    function showToast(message) {
+      toastMsg.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function timeAgo(timestamp) {
+      const time = new Date(timestamp).getTime();
+      const diff = Date.now() - time;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      if (minutes < 1) return 'baru saja';
+      if (minutes < 60) return `${minutes} menit lalu`;
+      if (hours < 24) return `${hours} jam lalu`;
+      if (days < 7) return `${days} hari lalu`;
+      return new Date(time).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function getAvatarColor(name) {
+      const colors = ['#FFD700', '#FF6B47', '#00E5C7', '#FFB84D', '#9B59B6', '#3498DB', '#E74C3C', '#1ABC9C'];
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      return colors[Math.abs(hash) % colors.length];
+    }
+
+    function escapeHtml(value) {
+      const div = document.createElement('div');
+      div.textContent = value ?? '';
+      return div.innerHTML;
+    }
+
+    function createCommentElement(comment) {
+      const item = document.createElement('div');
+      item.className = 'comment-item';
+      const name = comment.name || 'Pengunjung';
+      item.dataset.commentId = comment.id || '';
+      item.innerHTML = `
+        <div class="comment-avatar" style="background:${getAvatarColor(name)}">${escapeHtml(name.charAt(0).toUpperCase())}</div>
+        <div class="comment-body">
+          <div class="comment-head">
+            <span class="comment-name">${escapeHtml(name)}</span>
+            <span class="comment-time">${timeAgo(comment.created_at)}</span>
+          </div>
+          <div class="comment-text">${escapeHtml(comment.message)}</div>
+        </div>`;
+      return item;
+    }
+
+    async function loadRealtimeComments() {
+      if (!supabaseReady) {
+        liveIndicator.textContent = 'Setup Supabase diperlukan untuk komentar publik';
+        commentList.innerHTML = '<p style="text-align:center;color:var(--muted);padding:2rem;"></p>';
+        return;
+      }
+
+      liveIndicator.textContent = 'Live • Terhubung ke database';
+      const { data, error } = await supabase
+        .from('comments')
+        .select('id,name,message,created_at')
+        .eq('is_approved', true)
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) {
+        liveIndicator.textContent = 'Koneksi komentar bermasalah';
+        showToast('Komentar belum dapat dimuat.');
+        return;
+      }
+
+      commentList.innerHTML = '';
+      if (!data.length) {
+        commentList.innerHTML = '<p class="empty-comments" style="text-align:center;color:var(--muted);padding:2rem;">Belum ada komentar. Jadilah yang pertama!</p>';
+        return;
+      }
+      data.forEach(comment => commentList.appendChild(createCommentElement(comment)));
+    }
+
+    commentForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('commentName').value.trim();
+      const email = document.getElementById('commentEmail').value.trim();
+      const message = document.getElementById('commentMessage').value.trim();
+      if (!name || !message) return;
+      if (name.length > 50 || message.length > 500) {
+        showToast('Nama maksimal 50 karakter dan komentar maksimal 500 karakter.');
+        return;
+      }
+      if (!supabaseReady) {
+        showToast('Supabase belum dikonfigurasi.');
+        return;
+      }
+
+      const submitButton = commentForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+
+      const { error } = await supabase.from('comments').insert({
+        name,
+        email: email || null,
+        message,
+        is_approved: true
+      });
+
+      submitButton.disabled = false;
+      submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Komentar';
+      if (error) {
+        showToast('Komentar gagal dikirim.');
+        return;
+      }
+      commentForm.reset();
+      showToast('Komentar berhasil dikirim!');
+    });
+
+    if (supabaseReady) {
+      supabase.channel('public-comments')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, payload => {
+          if (payload.new.is_approved !== true) return;
+          const empty = commentList.querySelector('.empty-comments');
+          if (empty) empty.remove();
+          commentList.prepend(createCommentElement(payload.new));
+          showToast('Komentar baru masuk!');
+        })
+        .subscribe(status => {
+          if (status === 'SUBSCRIBED') liveIndicator.textContent = 'Live • Komentar Real-time';
+        });
+    }
+
+    loadRealtimeComments();
+    setInterval(() => {
+      commentList.querySelectorAll('.comment-item').forEach(item => {
+        // Waktu diperbarui saat data dimuat ulang berkala.
+      });
+    }, 30000);
+
+    /* ========== Smooth Scroll ========== */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
