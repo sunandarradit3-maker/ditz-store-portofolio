@@ -1,15 +1,18 @@
 # AEGIS-X — by Ditz Store
 
-Remote MCP control plane for authorized bug bounty workflows.
+Static Vercel dashboard + stateless MCP endpoint.
 
-- Dashboard: /
-- Health: /api/health
-- MCP: /mcp
-- Portfolio: https://ditz-store-portofolio-c1qe.vercel.app
+Endpoints:
+- /
+- /api/health
+- /mcp
 
-The AEGIS-X system/workflow is by Ditz Store. ChatGPT/GPT remains OpenAI technology.
+Portfolio:
+https://ditz-store-portofolio-c1qe.vercel.app
 
 Environment variables:
-- DITZ_PORTFOLIO_URL=https://ditz-store-portofolio-c1qe.vercel.app
-- AEGIS_ALLOWED_HOSTS=example.com,api.example.com
-- AEGIS_PROGRAM_NAME=Authorized Bug Bounty Program
+- AEGIS_ALLOWED_HOSTS
+- AEGIS_PROGRAM_NAME
+- DITZ_PORTFOLIO_URL
+
+The AEGIS-X system/workflow is by Ditz Store. ChatGPT/GPT remains OpenAI technology.
